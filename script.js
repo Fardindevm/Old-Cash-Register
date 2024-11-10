@@ -1,4 +1,3 @@
-// Define constants for currency
 const CURRENCY_UNITS = {
   'ONE HUNDRED': 100,
   'TWENTY': 20,
@@ -11,14 +10,12 @@ const CURRENCY_UNITS = {
   'PENNY': 0.01
 };
 
-// Get DOM elements - updated to match your HTML IDs
 const changeDiv = document.getElementById("change-due");
 const cashInfo = document.getElementById("cash-info");
 const input = document.getElementById("cash");
 const btn = document.getElementById("purchase-btn");
-const price = 1.87; // Updated to match your displayed total
+const price = 1.87;
 
-// Initial cash in drawer
 let cid = [
   ["PENNY", 1.01],
   ["NICKEL", 2.05],
@@ -50,7 +47,6 @@ class CashRegister {
       return { status: "INSUFFICIENT_FUNDS", change: [] };
     }
 
-    // Sort drawer from highest to lowest denomination
     let sortedDrawer = [...this.drawer].sort((a, b) => CURRENCY_UNITS[b[0]] - CURRENCY_UNITS[a[0]]);
 
     for (let [denomination, available] of sortedDrawer) {
@@ -84,10 +80,8 @@ class CashRegister {
 }
 
 function update() {
-  // Clear existing content
   cashInfo.innerHTML = '';
 
-  // Display each denomination and amount in the cash drawer
   cid.forEach(([name, amount]) => {
     const drawerItem = document.createElement("p");
     drawerItem.id = name.toLowerCase().replace(/\s+/g, '-');
@@ -120,7 +114,6 @@ function handlePurchase() {
   const register = new CashRegister(cid);
   const result = register.calculateChange(price, cashInput);
 
-  // Update the cash drawer amounts
   if (result.status !== "INSUFFICIENT_FUNDS") {
     result.change.forEach(([denomination, amount]) => {
       const drawerIndex = cid.findIndex(([name]) => name === denomination);
@@ -155,7 +148,6 @@ function displayChange(result) {
   });
 }
 
-// Event listeners
 btn.addEventListener("click", handlePurchase);
 input.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
@@ -163,5 +155,4 @@ input.addEventListener("keydown", (e) => {
   }
 });
 
-// Initialize the display
 window.onload = update;
